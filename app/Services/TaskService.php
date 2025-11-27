@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Task;
 use App\Repositories\Contracts\TaskRepositoryInterface;
+use App\Exceptions\InvalidTaskStatusException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -51,7 +52,7 @@ class TaskService
         $validStatuses = ['pending', 'in_progress', 'completed'];
         
         if (!in_array($status, $validStatuses)) {
-            throw new \InvalidArgumentException("Status inválido: {$status}");
+            throw new InvalidTaskStatusException("Status '{$status}' é inválido");
         }
 
         return $this->repository->findByStatus($status);
@@ -86,6 +87,11 @@ class TaskService
             'in_progress' => $this->repository->findByStatus('in_progress')->count(),
             'completed' => $this->repository->findByStatus('completed')->count(),
             'overdue' => $this->repository->getOverdue()->count(),
+            'by_priority' => [
+                'low' => $this->repository->findByPriority('low')->count(),
+                'medium' => $this->repository->findByPriority('medium')->count(),
+                'high' => $this->repository->findByPriority('high')->count(),
+            ],
         ];
     }
 

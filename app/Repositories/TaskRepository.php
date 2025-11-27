@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Task;
 use App\Repositories\Contracts\TaskRepositoryInterface;
+use App\Exceptions\TaskNotFoundException;
 use Illuminate\Database\Eloquent\Collection;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -37,7 +38,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task = $this->find($id);
         
         if (!$task) {
-            throw new \Exception("Task not found");
+            throw new TaskNotFoundException("Task com ID {$id} não encontrada");
         }
 
         $task->update($data);
@@ -49,7 +50,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task = $this->find($id);
         
         if (!$task) {
-            throw new \Exception("Task not found");
+            throw new TaskNotFoundException("Task com ID {$id} não encontrada");
         }
 
         return $task->delete();
@@ -79,7 +80,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task = $this->find($id);
         
         if (!$task) {
-            throw new \Exception("Task not found");
+            throw new TaskNotFoundException("Task com ID {$id} não encontrada");
         }
 
         $task->update([
