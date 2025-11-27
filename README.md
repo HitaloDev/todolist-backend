@@ -1,118 +1,80 @@
-# TodoList Backend
+# 📋 TodoList Backend
 
-Backend da aplicação TodoList desenvolvido com Laravel e PostgreSQL.
+Backend da aplicação TodoList desenvolvido com Laravel 12, PostgreSQL 16 e Docker.
 
-## 🚀 Início Rápido
+## 🚀 Como Rodar o Projeto
 
 ### Pré-requisitos
 - Docker
 - Docker Compose
 
-### Configuração
-
-1. Copie o arquivo `.env.example` para `.env`:
+### Configuração e Execução
 
 ```bash
+# Clone o repositório
+git clone git@github.com:HitaloDev/todolist-backend.git
+cd todolist-backend
+
+# Crie o arquivo .env
 cp .env.example .env
-```
 
-2. Execute o projeto:
-
-```bash
+# Suba os containers
 docker compose up -d --build
 ```
 
-> **Nota:** O `APP_KEY` será gerado automaticamente na primeira execução.
+Pronto! O backend estará disponível em `http://localhost:9000` 🎉
 
-**Pronto!** O backend estará disponível em `http://localhost:9000` 🎉
+## 🏗️ Arquitetura
 
-### Testar a API
+O projeto segue os princípios de **Clean Architecture** com as seguintes camadas:
 
-```bash
-curl http://localhost:9000/api/health
-```
+- **Controllers**: Recebem requests e retornam responses
+- **Services**: Contêm a lógica de negócio
+- **Repositories**: Abstraem o acesso aos dados
+- **Models**: Representam as entidades do domínio
+- **Requests**: Validam os dados de entrada
 
-O comando acima irá automaticamente:
-- ✅ Criar os containers (aplicação + banco de dados)
-- ✅ Gerar o arquivo `.env` com as configurações necessárias
-- ✅ Gerar a `APP_KEY` do Laravel
-- ✅ Aguardar o banco de dados ficar pronto
-- ✅ Executar as migrações
-- ✅ Iniciar o servidor
+### Padrões Utilizados
 
-### Outros Comandos Úteis
+- Repository Pattern
+- Dependency Injection
+- Service Layer
+- Form Request Validation
+- Soft Deletes
 
-```bash
-# Ver logs
-docker compose logs -f app
+## 🛠️ Tecnologias
 
-# Parar os containers
-docker compose down
+- PHP 8.2+
+- Laravel 12
+- PostgreSQL 16
+- Docker & Docker Compose
 
-# Executar comandos Artisan
-docker compose exec app php artisan <comando>
-```
+## 📦 Estrutura do Banco de Dados
 
-📖 Para mais detalhes, consulte o arquivo [SETUP.md](./SETUP.md)
+### Tabela: tasks
 
----
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| id | integer | Identificador único |
+| title | string | Título da task |
+| description | text | Descrição detalhada |
+| status | enum | pending, in_progress, completed |
+| priority | enum | low, medium, high |
+| due_date | date | Data de vencimento |
+| completed_at | timestamp | Data de conclusão |
+| created_at | timestamp | Data de criação |
+| updated_at | timestamp | Data de atualização |
+| deleted_at | timestamp | Soft delete |
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## 📝 Decisões Técnicas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. **Repository Pattern**: Abstração da camada de dados para facilitar testes e manutenção
+2. **Service Layer**: Centraliza a lógica de negócio, mantendo controllers magros
+3. **Soft Deletes**: Permite recuperação de dados deletados acidentalmente
+4. **Custom Exceptions**: Melhor tratamento e comunicação de erros
+5. **Form Requests**: Validações desacopladas e reutilizáveis
+6. **Docker**: Garante ambiente consistente em qualquer máquina
 
-## About Laravel
+## 📄 Licença
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Este projeto foi desenvolvido como parte de um desafio técnico.
