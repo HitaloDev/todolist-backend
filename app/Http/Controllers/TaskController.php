@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidTaskStatusException;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Services\TaskService;
@@ -143,6 +144,11 @@ class TaskController extends Controller
                 'success' => true,
                 'data' => $tasks,
             ], 200);
+        } catch (InvalidTaskStatusException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
         } catch (\InvalidArgumentException $e) {
             return response()->json([
                 'success' => false,
